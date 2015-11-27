@@ -1,72 +1,53 @@
-/* File: Controller.m
-
-Abstract: implementation for main window's controller.
-
-Version: 1.0
-
-(c) Copyright 2007 Apple, Inc. All rights reserved.
-
-IMPORTANT:  This Apple software is supplied to 
-you by Apple, Inc. ("Apple") in 
-consideration of your agreement to the following 
-terms, and your use, installation, modification 
-or redistribution of this Apple software 
-constitutes acceptance of these terms.  If you do 
-not agree with these terms, please do not use, 
-install, modify or redistribute this Apple 
-software.
-
-In consideration of your agreement to abide by 
-the following terms, and subject to these terms, 
-Apple grants you a personal, non-exclusive 
-license, under Apple's copyrights in this 
-original Apple software (the "Apple Software"), 
-to use, reproduce, modify and redistribute the 
-Apple Software, with or without modifications, in 
-source and/or binary forms; provided that if you 
-redistribute the Apple Software in its entirety 
-and without modifications, you must retain this 
-notice and the following text and disclaimers in 
-all such redistributions of the Apple Software. 
-Neither the name, trademarks, service marks or 
-logos of Apple Computer, Inc. may be used to 
-endorse or promote products derived from the 
-Apple Software without specific prior written 
-permission from Apple.  Except as expressly 
-stated in this notice, no other rights or 
-licenses, express or implied, are granted by 
-Apple herein, including but not limited to any 
-patent rights that may be infringed by your 
-derivative works or by other works in which the 
-Apple Software may be incorporated.
-
-The Apple Software is provided by Apple on an "AS 
-IS" basis.  APPLE MAKES NO WARRANTIES, EXPRESS OR 
-IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED 
-WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY 
-AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING 
-THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE 
-OR IN COMBINATION WITH YOUR PRODUCTS.
-
-IN NO EVENT SHALL APPLE BE LIABLE FOR ANY 
-SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL 
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS 
-OF USE, DATA, OR PROFITS; OR BUSINESS 
-INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, 
-REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF 
-THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER 
-UNDER THEORY OF CONTRACT, TORT (INCLUDING 
-NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN 
-IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF 
-SUCH DAMAGE.
-*/
+/*
+     File: Controller.m 
+ Abstract: Main window's controller. 
+  Version: 1.1 
+  
+ Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple 
+ Inc. ("Apple") in consideration of your agreement to the following 
+ terms, and your use, installation, modification or redistribution of 
+ this Apple software constitutes acceptance of these terms.  If you do 
+ not agree with these terms, please do not use, install, modify or 
+ redistribute this Apple software. 
+  
+ In consideration of your agreement to abide by the following terms, and 
+ subject to these terms, Apple grants you a personal, non-exclusive 
+ license, under Apple's copyrights in this original Apple software (the 
+ "Apple Software"), to use, reproduce, modify and redistribute the Apple 
+ Software, with or without modifications, in source and/or binary forms; 
+ provided that if you redistribute the Apple Software in its entirety and 
+ without modifications, you must retain this notice and the following 
+ text and disclaimers in all such redistributions of the Apple Software. 
+ Neither the name, trademarks, service marks or logos of Apple Inc. may 
+ be used to endorse or promote products derived from the Apple Software 
+ without specific prior written permission from Apple.  Except as 
+ expressly stated in this notice, no other rights or licenses, express or 
+ implied, are granted by Apple herein, including but not limited to any 
+ patent rights that may be infringed by your derivative works or by other 
+ works in which the Apple Software may be incorporated. 
+  
+ The Apple Software is provided by Apple on an "AS IS" basis.  APPLE 
+ MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION 
+ THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS 
+ FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND 
+ OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS. 
+  
+ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL 
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, 
+ MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED 
+ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), 
+ STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE 
+ POSSIBILITY OF SUCH DAMAGE. 
+  
+ Copyright (C) 2011 Apple Inc. All Rights Reserved. 
+  
+ */
 
 
 #import "Controller.h"
 #import "iCal.h"
-
-
 
 
 
@@ -78,11 +59,6 @@ SUCH DAMAGE.
 
 		/* set the date to today's date */
 	[time setDateValue: [NSDate date]];
-
-		/* locate the application, fetch it's dictionary, and synthesize all of the
-		classes it describes. */
-	iCalApplicationClass = nil;
-			//[SBApplication applicationWithBundleIdentifier:@"com.apple.iCal"];
 }
 
 
@@ -106,7 +82,7 @@ SUCH DAMAGE.
 - (IBAction)addUpdateEvent:(id)sender {
 
 
-	/* code from Step 11: */
+	/* code from Step 10: */
 	
 		/* reference to our iCal application object */
 	iCalApplication *iCal;
@@ -118,7 +94,7 @@ SUCH DAMAGE.
 	[iCal activate];
 	
 
-	/* code from Step 12: */
+	/* code from Step 11: */
 
 		/* reference to our calendar object */
 	iCalCalendar *theCalendar = nil;
@@ -139,21 +115,21 @@ SUCH DAMAGE.
 	if ( theCalendar == nil ) {
 
 			/* set up the properties for the new calendar */
-		NSDictionary *props =
-			[NSDictionary dictionaryWithObjectsAndKeys:
-				calendarName, @"name",
-				nil];
+		NSDictionary *props = [NSDictionary dictionaryWithObjectsAndKeys:calendarName, @"name",nil];
 		
-			/* allocate and initialize the new calendar */
+			/* create and initialize the new calendar.  The returned object is not actually
+               initialized until it is used. */
 		theCalendar = [[[iCal classForScriptingClass:@"calendar"] alloc] initWithProperties: props];
 		
 			/* ...and add it to the list of calendars in the iCal application. */
 		[[iCal calendars] addObject: theCalendar]; 
+        
+            /* despite warnings by the analyzer, theCaldendar does not actually need to be released.
+               it was initialized when we added it to the array but immediately autoreleased. */
 	}
-	
 
 
-	/* code from Step 13: */
+	/* code from Step 12: */
 	
 		/* get the event with the specified name from the calendar.  If
 		no such event exists, then create a new one with that name.  */
@@ -169,7 +145,7 @@ SUCH DAMAGE.
 	NSDate* startDate = [time dateValue];
 	
 		/* set the end date to the start time plus one hour (3600 seconds). */
-	NSDate* endDate = [[NSDate alloc] initWithTimeInterval:3600 sinceDate:startDate];
+	NSDate* endDate = [NSDate dateWithTimeInterval:3600 sinceDate:startDate];
 	
 	
 		/* the event summary contains the name displayed in the iCal calendar windows,
@@ -207,11 +183,13 @@ SUCH DAMAGE.
 				nil];
 
 			/* create the new event */
-		theEvent = [[[iCal classForScriptingClass:@"event"] alloc]
-							initWithProperties: props];
+		theEvent = [[[iCal classForScriptingClass:@"event"] alloc] initWithProperties: props];
 		
 			/* add it to the list of events for this calendar. */
 		[[theCalendar events] addObject: theEvent];
+        
+        /* despite warnings by the analyzer, theEvent does not actually need to be released.
+         it was initialized when we added it to the array but immediately autoreleased. */
 		
 	}
 	

@@ -1,70 +1,8 @@
-File: ReadMe.txt
-
-Abstract: readme file for the ScriptingBridgeiCal sample.
-
-Version: 1.0
-
-(c) Copyright 2007 Apple, Inc. All rights reserved.
-
-IMPORTANT:  This Apple software is supplied to 
-you by Apple, Inc. ("Apple") in 
-consideration of your agreement to the following 
-terms, and your use, installation, modification 
-or redistribution of this Apple software 
-constitutes acceptance of these terms.  If you do 
-not agree with these terms, please do not use, 
-install, modify or redistribute this Apple 
-software.
-
-In consideration of your agreement to abide by 
-the following terms, and subject to these terms, 
-Apple grants you a personal, non-exclusive 
-license, under Apple's copyrights in this 
-original Apple software (the "Apple Software"), 
-to use, reproduce, modify and redistribute the 
-Apple Software, with or without modifications, in 
-source and/or binary forms; provided that if you 
-redistribute the Apple Software in its entirety 
-and without modifications, you must retain this 
-notice and the following text and disclaimers in 
-all such redistributions of the Apple Software. 
-Neither the name, trademarks, service marks or 
-logos of Apple Computer, Inc. may be used to 
-endorse or promote products derived from the 
-Apple Software without specific prior written 
-permission from Apple.  Except as expressly 
-stated in this notice, no other rights or 
-licenses, express or implied, are granted by 
-Apple herein, including but not limited to any 
-patent rights that may be infringed by your 
-derivative works or by other works in which the 
-Apple Software may be incorporated.
-
-The Apple Software is provided by Apple on an "AS 
-IS" basis.  APPLE MAKES NO WARRANTIES, EXPRESS OR 
-IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED 
-WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY 
-AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING 
-THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE 
-OR IN COMBINATION WITH YOUR PRODUCTS.
-
-IN NO EVENT SHALL APPLE BE LIABLE FOR ANY 
-SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL 
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS 
-OF USE, DATA, OR PROFITS; OR BUSINESS 
-INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, 
-REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF 
-THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER 
-UNDER THEORY OF CONTRACT, TORT (INCLUDING 
-NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN 
-IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF 
-SUCH DAMAGE.
+ScriptingBridgeiCal
+===================
 
 
-
-
-Introduction
+INTRODUCTION
 
 This file details the steps involved in putting together a project that uses Scripting Bridge to send Apple events to the iCal application for creating
 calendars and adding or updating events.  
@@ -82,11 +20,11 @@ This targets the iCal application and was built using the 'Cocoa Application' Xc
 
 The first thing to do is to set up Xcode to automatically generate the Scripting Bridge source for the application you would like to target.  The following steps describe how you can do that:
 
-(a) Turn down the "Targets" tab in the "Groups & Files" list on the left hand side and select the main target.  In this sample,  select the "ScriptingBridgeiCal" target.  
+(a) In the project navigator, choose the project file and select the "ScriptingBridgeiCal" target.  
 
-(b) With the "ScriptingBridgeiCal" target selected, open the information panel (by clicking on the Info icon, or by control- or right-clicking on the target name and selecting "Get Info" from the pop-up menu).
+(b) With the "ScriptingBridgeiCal" target selected, switch to the "Build Rules" tab.
 
-(c) In the info window, click on the Rules tab and then click on the + button at the bottom to add a new rule.
+(c) In the build rules tab, click on the + button at the bottom to add a new rule.
 
 (d) Set up the new rule as follows:
 
@@ -104,7 +42,7 @@ The first thing to do is to set up Xcode to automatically generate the Scripting
 
 	NOTE: if you're typing this rule in by hand, note that it should all be one one line, and it must be typed exactly as shown above.  If you have difficulty entering the above command, then copy and paste the command from the readme into the rule.
 
-(e) All done.  You can close the info window.  Xcode is now set up to automatically generate Scripting Bridge source for any applications you add to your project.
+(e) All done.  Xcode is now set up to automatically generate Scripting Bridge source for any applications you add to your project.
 
 NOTE: this rule uses the sdef and sdp command line tools.  To learn more about these tools, use the following commands in the terminal window:
    man sdp
@@ -126,14 +64,14 @@ You should uncheck the 'Copy items into destination group's folder (if needed)' 
 
 4. Add the target application to the Compile Sources.
 
-After you have added the target application to your project, you must also add it to the main target's compile sources.  You can do that by adding the application to the 'Compile Sources' build phase under the main target.  In the "Groups & Files" list, open the "Targets" and the "ScriptingBridgeiCal" target  and the Compile Sources build phase items by clicking on the arrows to the left of them.  Then, drag the iCal.app from the project files group into the Compile Sources.
+After you have added the target application to your project, you must also add it to the main target's Compile Sources.  You can do that by adding the application to the 'Compile Sources' build phase under the main target.
 
 
 
 
 5. Add the Scripting Bridge framework to your project.
 
-Turn down the "Frameworks" group in the Groups & Files area, and then control-click (or right click) on the "Linked Frameworks" sub-group.  Select "Add > Existing Frameworks..." from the pop-up menu.  Then, add the "ScriptingBridge.framework" (/System/Library/Frameworks/ScriptingBridge.framework) to the project.  
+In the Build Phases of the main target, expand the group titled "Link With Libraries".  Click the + button and select the ScriptingBridge.framework and click the Add button. 
 
 
 
@@ -150,24 +88,17 @@ You can edit the Info.plist file by either clicking on its icon in the resources
 
 
 
-7. Make sure the Target SDK is set to Mac OS X 10.5
-
-You won't have to change this setting for this project, but if you are adding Scripting Bridge to another project that you started an earlier version of the Mac OS than Mac OS X, then you will need to update the Target SDK for the project.  In the Groups & Files view, select the ScriptingBridgeiCal project icon at the top of the list and then open the information window.  Under the General tab, change the Cross-Develop Using Target SDK: setting to Mac OS X 10.5.
-
-
-
-
-8. Build your project.
+7. Build your project.
 
 If you have followed the steps above, Xcode will generate the Scripting Bridge source for your project.  They will be put inside of your build folder in a place where the linker and compiler can find them.  
 
 The build rule that we installed will create a .h file with the same name as the application.  For example, if you added iCal to our project, then the build rule will create iCal.h.  The files will be created inside of the build directory in the DerivedSources directory where the compiler can find them.
 
 For the Debug build, the iCal.h file will be located in this sub folder of the build directory:
-/build/ScriptingBridgeiCal.build/Debug/ScriptingBridgeiCal.build/DerivedSources/iCal.h
+/build/Intermediates /ScriptingBridgeiCal.build/Debug/ScriptingBridgeiCal.build/DerivedSources/iCal.h
 
 For the Release build, the iCal.h file will be located in this sub folder of the build directory:
-/build/ScriptingBridgeiCal.build/Release/ScriptingBridgeiCal.build/DerivedSources/iCal.h
+/build/Intermediates /ScriptingBridgeiCal.build/Release/ScriptingBridgeiCal.build/DerivedSources/iCal.h
 
 A convenient way for you to open and inspect these files is to use the 'Open Quickly' command in the file menu.  For most purposes, the .h file will contain most of the interesting information so to view that file you open the 'iCal.h' file.
 
@@ -176,7 +107,7 @@ NOTE:  Building the application will launch the iCal application in order to obt
 
 
 
-9. Add in the iCal Scripting Bridge header.
+8. Add in the iCal Scripting Bridge header.
 
 In the file Controller.m, add '#import "iCal.h"' near the top of the file.  This will include all of the Scripting Bridge definitions for iCal.
 
@@ -188,14 +119,14 @@ In your own application, of course, you would import the iCal.h file in the file
 
 
 
-10.  Add in the Scripting Bridge code.
+9.  Add in the Scripting Bridge code.
 
 In this sample All of the Scripting Bridge functionality happens in the addUpdateEvent message handler inside of the Controller.m file.  In the following steps, we'll add sources using Scripting Bridge to that message handler. 
 
 
 
 
-11. Add Declarations.
+10. Add Declarations.
 
 At the beginning of the message handler we'll add some variable declarations and we'll instantiate an instance of our iCalApplication Scripting Bridge class.  Since we would like to see the changes being made in the iCal window, we'll call [iCal activate] to bring the application to the front.
 
@@ -221,7 +152,7 @@ This is equivalent to the AppleScript:
 	
 
 
-12. Add calendar creation/selection.
+11. Add calendar creation/selection.
 
 Next we're going to discuss the code used to retrieve a reference to the calendar with a name matching the name typed into the window.  If one doesn't exist, we'll create a new calendar with that name.  Interesting items to note in this section are:
 
@@ -286,7 +217,7 @@ Note: You can build and run the sample after adding this code.  It should launch
 
 
 
-13.  Event creation/selection.
+12.  Event creation/selection.
 
 In this final step, we're going to look inside of the calendar object we retrieved in step 12 for an event who's summary matches the name typed in the user interface.  In iCal the event summary is the name that shows up in the calendar window, and events do not have names.  Because we're using the event summary value to identify our events, this gives us an opportunity to show how to use some other features of scripting bridge.  Interesting points about this section are:
 
@@ -390,14 +321,14 @@ Barring the UI handling code, our sample is now equivalent in functionality to t
 
 
 
-12. Build and run the sample.
+13. Build and run the sample.
 
 It should launch iCal application, bring it into the foreground,  create a new calendar using the calendar name displayed in the ScriptingBridgeiCal window, create a new event in that calendar, and set the start time and end time for that event.  Of course, if the calendar or event with the correct name already exists, then the app will just update those.
 
 
 
 
-13. Where to next?
+14. Where to next?
 
 Documentation for Scripting Bridge can be found in the Scripting Bridge Release Note.  To find the Scripting Bridge Release Note, select 'Documentation' from the Help Menu in Xcode, select "Release Notes" from the "Jump To:" menu in the top right of the document window, click on the "View the complete Release Notes List." link near the top left of the window and scroll down to the Scripting Bridge Release Note.
 
@@ -410,6 +341,24 @@ There are two other Scripting Bridge samples available including SBSetFinderComm
 
 
 
+===========================================================================
+BUILD REQUIREMENTS
 
+Xcode 3.2, Mac OS X 10.6 Snow Leopard or later.
 
+===========================================================================
+RUNTIME REQUIREMENTS
 
+Mac OS X 10.6 Snow Leopard or later.
+
+===========================================================================
+CHANGES FROM PREVIOUS VERSIONS
+
+Version 1.1
+- Updated setup instructions in the ReadMe.
+- Project updated for Xcode 4.
+Version 1.0
+- Initial Version
+
+===========================================================================
+Copyright (C) 2007-2011 Apple Inc. All rights reserved.
